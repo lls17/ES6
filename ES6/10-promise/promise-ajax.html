@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript">
+			function ajax(url, fnSuc, fnFail){
+				var xhr = new XMLHttpRequest();
+				xhr.open("get", url, true);
+				xhr.send();
+				
+				xhr.onload = function(){
+					if(xhr.readyState==4 && xhr.status==200){
+						fnSuc(xhr.responseText);
+					}else{
+						fnFail(xhr.status);
+					}
+				}
+			}
+		
+			window.onload = function(){
+				let oBtn = document.getElementById("btn");
+				let oDiv = document.getElementById("box");
+				
+				oBtn.onclick = function(){
+					var p1 = new Promise(function(resolve, reject){
+						ajax("./ajax.txt", function(data){
+							resolve(data);
+						}, function(data){
+							reject(data);
+						});
+					});
+					
+					p1.then(function(data){
+						oDiv.innerHTML = data;
+					});
+				}
+			};
+		</script>
+	</head>
+	<body>
+		<input type="button" name="btn" id="btn" value="aaa" />
+		<div id="box"></div>
+	</body>
+</html>
